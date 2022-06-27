@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect';
 
-const selectIds = state => state.story.storyIds;
-const selectStories = state => state.story.stories;
+export const isLoading = state => state.loading;
+export const currentPage = state => state.page;
+const selectIds = state => state.storyIds;
+export const selectStories = state => state.stories;
 
 export const hasStoriesToLoad = createSelector(
     selectIds,

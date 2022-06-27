@@ -8,32 +8,32 @@ const initialState = {
     error: '',
 };
 
-export const appReducer = (state = initialState, { type, payload }) => {
-    switch (type) {
+export const appReducer = (state = initialState, action) => {
+    switch (action.type) {
         case `${actionTypes.LOAD_ITEMS}_REQUEST`:
         case `${actionTypes.LOAD_IDS}_REQUEST`:
             return {
                 ...state,
-                isFetching: true,
+                loading: true,
             };
         case `${actionTypes.LOAD_IDS}_SUCCESS`:
             return {
                 ...state,
-                ...payload,
+                ...action.payload,
             };
         case `${actionTypes.LOAD_ITEMS}_SUCCESS`:
             return {
                 ...state,
-                stories: [...state.stories, ...payload.stories],
+                stories: [...state.stories, ...action.payload.stories],
                 page: state.page + 1,
-                isFetching: false,
+                loading: false,
             };
         case `${actionTypes.LOAD_ITEMS}_FAILURE`:
         case `${actionTypes.LOAD_IDS}_FAILURE`:
             return {
                 ...state,
-                error: payload,
-                isFetching: false,
+                error: action.payload,
+                loading: false,
             };
         default:
             return state;
