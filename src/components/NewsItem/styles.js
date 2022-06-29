@@ -21,24 +21,21 @@ export const Link = styled.a`
     color: #bfbebe;
     text-decoration: none;
 `;
-export const Time = styled.div`
+
+const Info = styled.div`
     font-size: 12px;
     color: #848886;
     position: absolute;
+`;
+export const Time = styled(Info)`
     top: 3px;
     left: 7px;
 `;
-export const Score = styled.div`
-    font-size: 12px;
-    color: #848886;
-    position: absolute;
+export const Score = styled(Info)`
     bottom: 3px;
     left: 7px;
 `;
-export const Author = styled.div`
-    font-size: 12px;
-    color: #848886;
-    position: absolute;
+export const Author = styled(Info)`
     bottom: 3px;
     right: 7px;
 `;
