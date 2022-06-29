@@ -9,6 +9,7 @@
 // TODO fetch item by id (https://hacker-news.firebaseio.com/v0/item/<itemId>.json)
 // function fetchStoryById(id) {}
 import { newsApi } from '../services/NewsApi';
+import { currentPage, selectIds } from './selectors';
 
 const createAction =
     type =>
@@ -34,24 +35,28 @@ export const actionTypes = {
 };
 
 export const actions = {
-    loadStories: createRequest(actionTypes.LOAD_ITEMS, ({ action, payload, dispatch }) => {
-        const { ids, page } = payload;
-        dispatch(action.request(payload));
-        return newsApi
-            .getCurrentPageStories(ids, page)
-            .then(stories => {
-                dispatch(action.success({ stories }));
-            })
-            .catch(err => dispatch(action.failure(err)));
-    }),
-    loadStoryIds: createRequest(actionTypes.LOAD_IDS, ({ action, payload, dispatch, getState }) => {
+    loadStories: createRequest(
+        actionTypes.LOAD_ITEMS,
+        ({ action, payload, dispatch, getState }) => {
+            const state = getState();
+            const page = currentPage(state);
+            const ids = selectIds(state);
+            dispatch(action.request(payload));
+            return newsApi
+                .getCurrentPageStories(ids, page)
+                .then(stories => {
+                    dispatch(action.success({ stories }));
+                })
+                .catch(err => dispatch(action.failure(err)));
+        }
+    ),
+    loadStoryIds: createRequest(actionTypes.LOAD_IDS, ({ action, payload, dispatch }) => {
         dispatch(action.request(payload));
         return newsApi
             .getIds()
             .then(storyIds => {
-                const currentPage = getState().page;
                 dispatch(action.success({ storyIds }));
-                dispatch(actions.loadStories({ ids: storyIds, page: currentPage }));
+                dispatch(actions.loadStories());
             })
             .catch(err => dispatch(action.failure(err)));
     }),
